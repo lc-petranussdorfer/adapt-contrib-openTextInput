@@ -1,12 +1,12 @@
-.textinput-component {
-    .textinput-item {
+.opentextinput-component {
+    .opentextinput-item {
         background-color: @primary-color;
         padding: @item-padding;
         position:relative;
         border:@border;
         margin-bottom:2px;
     }
-    label{
+    label {
         background-color: transparent;
         line-height: 32px;
         padding: 0px;
@@ -15,19 +15,18 @@
         cursor: default;
         color: @inverted-foreground-color;
     }
-    .textinput-item-prefix {
+    .opentextinput-item-prefix {
         width:20%;
     }
-    .textinput-item-textbox {
+    .opentextinput-item-textbox {
         padding: 0 5px;
         width: 54%;
         float: left;
         height: 26px;
     }
-    .textinput-item-suffix {
+    .opentextinput-item-suffix {
         width:10%;
     }
-    
     .button {
         outline: none;
         text-decoration: none;
@@ -36,13 +35,11 @@
         background-color: @button-color;
         display: none;
         margin-top:8px;
-        
         &.submit {
             display: inline-block;
         }
     }
-    
-    .textinput-widget {
+    .opentextinput-widget {
         &.submitted {
             .button.submit {
                 display: none;
@@ -50,39 +47,36 @@
             .button.reset {
                 display: inline-block;
             }
-            .textinput-item {
+            .opentextinput-item {
                 background-color: @item-disabled-color;
             }
         }
-    
         &.user {
             .button.model {
                 display: inline-block;
             }
             .incorrect {
-                .textinput-incorrect-icon {
+                .opentextinput-incorrect-icon {
                     display: block;
                 }
             }
             .correct {
-                .textinput-correct-icon {
+                .opentextinput-correct-icon {
                     display: block;
                 }
             }
         }
-        
         &.model {
             .button.user {
                 display: inline-block;
             }
-            .textinput-select-icon {
+            .opentextinput-select-icon {
                 display: none;
             }
-            .textinput-correct-icon {
+            .opentextinput-correct-icon {
                 display: block;
             }
         }
-        
         &.disabled {
             .button.reset {
                 display: none;
@@ -92,7 +86,6 @@
                 visibility: hidden;
             }
         }
-        
         &.correct {
             .button {
                 visibility: hidden;
@@ -100,8 +93,7 @@
             }
         }
     }
-
-    .textinput-item-state {
+    .opentextinput-item-state {
         background: none;
         position: absolute;
         right: (@icon-size/2);
@@ -111,18 +103,15 @@
         margin-top: -(@icon-size/2);
         z-index: 0;
     }
-
-    .textinput-correct-icon {
+    .opentextinput-correct-icon {
         color: @icon-correct-color;
         display: none;
     }
-
-    .textinput-incorrect-icon {
+    .opentextinput-incorrect-icon {
         color: @icon-incorrect-color;
         display: none;
     }
 }
-    
 .no-touch {
     .button {
         &:hover {

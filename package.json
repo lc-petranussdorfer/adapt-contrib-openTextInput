@@ -1,14 +1,14 @@
 {
-  "name": "adapt-contrib-textInput",
+  "name": "adapt-contrib-openTextInput",
   "version": "0.0.1",
-  "description": "A question component that allows the learner to input text based upon a question stem",
+  "description": "A question component that allows the learner to input open text based upon a question stem",
   "main": "",
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/adaptlearning/adapt-contrib-textInput.git"
+    "url": "https://github.com/lc-petranussdorfer/adapt-contrib-openTextInput"
   },
   "author": "AdaptLearning",
   "license": "GPL v3",
