@@ -1,0 +1,62 @@
+{{! Maintainers - Kev Adsett}}
+<div class="component-inner opentextinput-inner">
+    {{#if title}}
+    <div class="component-title opentextinput-title">
+        <h4 class="component-title-inner opentextinput-title-inner">
+            {{{title}}}
+        </h4>
+    </div>
+    {{/if}}
+    {{#if body}}
+    <div class="component-body opentextinput-body">
+        <div class="component-body-inner opentextinput-body-inner">
+            {{{body}}}
+        </div>
+    </div>
+    {{/if}}
+    {{! complex unless and if combination to set the correct classes for CSS to use in showing marking and disabled states}}
+    <div class="component-widget opentextinput-widget {{#unless _isEnabled}} disabled {{#if _isComplete}} complete submitted user {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
+        {{#each items}}
+        <div class="opentextinput-item item clearfix {{#unless ../_isEnabled}}{{#if correct}}correct{{else}}incorrect{{/if}}{{/unless}}">
+            {{#if prefix}}
+                <label class="opentextinput-item-prefix">{{{prefix}}}</label>
+            {{/if}}
+            {{#if ../_isEnabled}}
+                <input type="text" placeholder="{{../placeholder}}" class="opentextinput-item-textbox" data-id="input-{{@index}}" value="">
+            {{else}}
+                <input type="text" placeholder="{{../placeholder}}" class="opentextinput-item-textbox" data-id="input-{{@index}}" value="{{userAnswer}}" disabled="true">
+            {{/if}}
+            {{#if suffix}}
+                <label class="opentextinput-item-suffix">{{{suffix}}}</label>
+            {{/if}}
+            <div class="opentextinput-item-state">
+                <div class="opentextinput-icon opentextinput-correct-icon icon icon-tick"></div>
+                <div class="opentextinput-icon opentextinput-incorrect-icon icon icon-cross"></div>
+            </div>
+        </div>
+        {{/each}}
+        {{! if statements set default button labels if unset in json}}
+        <div class="buttons">
+             <a href="#" class="button submit">
+                <span>  
+                    {{{buttons.submit}}} 
+                </span>
+            </a>
+            <a href="#" class="button reset">
+                <span>
+                    {{{buttons.reset}}} 
+                </span>
+            </a>
+            <a href="#" class="button model">
+                <span> 
+                    {{{buttons.showCorrectAnswer}}} 
+                </span>
+            </a>
+            <a href="#" class="button user">
+                <span>
+                    {{{buttons.hideCorrectAnswer}}} 
+                </span>
+            </a>            
+        </div>
+    </div>
+</div>

@@ -1,17 +1,17 @@
 {
-  "name": "my-adapt-course",
-  "version": "0.0.0",
+  "name": "adapt-contrib-openTextInput",
+  "version": "0.0.1",
+  "homepage": "https://github.com/lc-petranussdorfer/adapt-contrib-openTextInput",
   "authors": [
-    "AdaptLearning"
+    "Petra Nussdorfer <petra.nussdorfer@learnchamp.com",
+    "Thomas Eitler <thomas.eitler@learnchamp.com>",
+    "Barbara Fellner <me@barbarafellner.at>"
   ],
-  "main": "build/index.html",
-  "license": "GPLv3",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "test"
+  "description": "A question component that allows the learner to input open text based upon a question stem.",
+  "main": "/js/adapt-contrib-openTextInput.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-component"
   ],
-  "dependencies": {
-  }
+  "license": "GPLv3"
 }

@@ -1,42 +1,23 @@
 {
-  "name": "adapt_framework",
+  "name": "adapt-contrib-openTextInput",
   "version": "0.0.1",
-  "description": "Adapt Learning output framework",
-  "main": "source/adapt.js",
+  "description": "A question component that allows the learner to input open text based upon a question stem",
+  "main": "",
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/adaptlearning/adapt_framework.git"
+    "url": "https://github.com/lc-petranussdorfer/adapt-contrib-openTextInput"
   },
   "author": "AdaptLearning",
   "license": "GPL v3",
   "bugs": {
-    "url": "https://github.com/adaptlearning/adapt_framework/issues"
+    "url": "https://github.com/adaptlearning/adapt-contrib-textInput/issues"
   },
   "devDependencies": {
-    "matchdep": "~0.3.0",
-    "grunt": "~0.4.1",
-    "grunt-contrib-less": "~0.7.0",
-    "grunt-contrib-handlebars": "~0.5.11",
-    "grunt-contrib-watch": "~0.5.1",
-    "grunt-contrib-requirejs": "~0.4.1",
-    "grunt-contrib-connect": "~0.3.0",
-    "grunt-concurrent": "~0.4.2",
-    "grunt-open": "~0.2.2",
-    "grunt-bower-requirejs": "~0.7.1",
-    "grunt-requirejs-bundle": "~0.0.7",
-    "grunt-contrib-copy": "~0.4.1",
     "karma": "~0.9",
     "karma-mocha": "*",
-    "karma-expect": "*",
-    "bower": "*",
-    "adapt-grunt-tracking-ids": "*",
-    "grunt-jsonlint": "~1.0.4"
-  },
-  "dependencies": {
-    "assemble-less": "~0.5.3",
-    "grunt-contrib-concat": "~0.3.0"
+    "karma-expect": "*"
   }
 }
