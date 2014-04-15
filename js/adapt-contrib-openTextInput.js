@@ -10,6 +10,7 @@ define(function(require) {
 
 	var OpenTextInput = QuestionView.extend({
 		events: {
+			"click .opentextinput-widget .button.save": "onSaveClicked",
 			"click .opentextinput-widget .button.submit": "onSubmitClicked",
 			"click .opentextinput-widget .button.reset": "onResetClicked",
 			"click .opentextinput-widget .button.model": "onModelAnswerClicked",
