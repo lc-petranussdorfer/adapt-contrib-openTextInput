@@ -28,19 +28,13 @@ define(function(require) {
 
 		canSubmit: function() {
 			var canSubmit = true;
-			this.$(".opentextinput-item-textbox").each(function() {
-				if ($(this).val() == "") {
-					canSubmit = false;
-				}
-			});
+			if ($(".opentextinput-item-textbox").val() == "") {
+				canSubmit = false;
+			}
 			return canSubmit;
 		},
 
-		checkAnswerIsCorrect: function(possibleAnswers, userAnswer) {
-			var answerIsCorrect = _.contains(possibleAnswers, this.cleanupUserAnswer(userAnswer));
-			if (answerIsCorrect) this.model.set('_hasAtLeastOneCorrectSelection', true);
-			return answerIsCorrect;
-		},
+		checkAnswerIsCorrect: function(possibleAnswers, userAnswer) {},
 
 		cleanupUserAnswer: function(userAnswer) {
 			if (this.model.get('_allowsAnyCase')) {
@@ -53,26 +47,7 @@ define(function(require) {
 			return userAnswer;
 		},
 
-		forEachAnswer: function(callback) {
-			_.each(this.model.get('items'), function(item, index) {
-				if (this.model.get('_allowsAnyOrder')) {
-					this.$(".opentextinput-item-textbox").each($.proxy(function(index, element) {
-						var userAnswer = $(element).val();
-						callback(this.checkAnswerIsCorrect(item.answers, userAnswer), item);
-					}, this));
-				} else {
-					var userAnswer = this.$(".opentextinput-item-textbox").eq(index).val();
-					callback(this.checkAnswerIsCorrect(item.answers, userAnswer), item);
-				}
-			}, this);
-		},
-
-		markQuestion: function() {
-			this.forEachAnswer(function(correct, item) {
-				item.correct = correct;
-			});
-			QuestionView.prototype.markQuestion.apply(this);
-		},
+		markQuestion: function() {},
 
 		onEnabledChanged: function() {
 			this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get('_isEnabled'));
