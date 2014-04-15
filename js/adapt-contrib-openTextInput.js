@@ -102,6 +102,6 @@ define(function(require) {
 
 	});
 
-	Adapt.register("opentextinput", openTextInput);
+	Adapt.register("opentextinput", OpenTextInput);
 
 });
