@@ -21,29 +21,32 @@
 
  		setupDefaultSettings: function() {
  			this.model.set("_isSaved", false);
-
  			QuestionView.prototype.setupDefaultSettings.apply(this);
  		},
 
  		onSaveClicked: function(event) {
  			event.preventDefault();
-  	// ToDo
 
+  			var userAnswer = this.$(".opentextinput-item-textbox").val();
+  			/*console.log("UserAnswer: " + userAnswer);
+  			console.log("Model Wert",this.model.get("_isSaved"));*/
 
-  	// Console log
-  	var userAnswer = this.$(".opentextinput-item-textbox").val();
-  	console.log("UserAnswer: " + userAnswer);
-  	console.log("Model Wert",this.model.get("_isSaved"));
+    		// check localstorage
+    		if (this.supports_html5_storage()) {
 
-    // check localstorage
-    if (Modernizr.localstorage) {
-    	
-  		localStorage.setItem("Answer", userAnswer);
-  		this.model.set("_isSaved", true);
+  				localStorage.setItem(this.model.get('_id')+"-OpenTextInput-UserAnswer", userAnswer);
+  				this.model.set("_isSaved", true);
 
-  	} else {
-  		alert("No local storage available");
-	}
+  			} else {
+  				alert("No local storage available");
+			}
+},
+ supports_html5_storage: function() {
+  try {
+    return 'localStorage' in window && window['localStorage'] !== null;
+  } catch (e) {
+    return false;
+  }
 },
 
 forceFixedPositionFakeScroll: function() {
