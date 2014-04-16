@@ -12,8 +12,8 @@ define(function(require) {
         events: {
             "click .opentextinput-widget .button.save": "onSaveClicked",
             "click .opentextinput-widget .button.submit": "onSubmitClicked",
-            "click .textinput-widget .button.model":"onModelAnswerClicked",
-            "click .textinput-widget .button.user":"onUserAnswerClicked"
+            "click .opentextinput-widget .button.model":"onModelAnswerClicked",
+            "click .opentextinput-widget .button.user":"onUserAnswerClicked"
         },
         postRender: function() {
             // IMPORTANT! 
@@ -91,7 +91,7 @@ define(function(require) {
                 _isEnabled: false,
                 _isSubmitted: true,
             });
-            this.$(".component-widget").addClass("submitted");
+            this.$(".component-widget").addClass("submitted user");
 
             this.storeUserAnswer();
             // this.showFeedback();
@@ -100,7 +100,7 @@ define(function(require) {
             this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get('_isEnabled'));
         },
         onModelAnswerShown: function() {
-            this.$(".opentextinput-item-textbox").val(this.mode.get('modelAnswer'));
+            this.$(".opentextinput-item-textbox").val(this.model.get('modelAnswer'));
         },
         onUserAnswerShown: function() {
             var identifier = this.model.get('_id') + "-OpenTextInput-UserAnswer";
