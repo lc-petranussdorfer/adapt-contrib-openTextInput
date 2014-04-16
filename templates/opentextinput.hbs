@@ -21,12 +21,13 @@
         </div>
         {{! if statements set default button labels if unset in json}}
         <div class="buttons">
-            <a href="#" class="button save">
+            <a href="#" class="button save" value="Save">
                 <span>  
-                    {{{buttons.save}}} 
+                {{#unless buttons.save}} Save {{/unless}}
+                    {{{buttons.save}}}
                 </span>
             </a>
-             <a href="#" class="button submit">
+             <a href="#" class="button submit" >
                 <span>  
                     {{{buttons.submit}}} 
                 </span>
