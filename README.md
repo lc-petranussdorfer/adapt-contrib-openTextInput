@@ -1,6 +1,4 @@
-adapt-contrib-openTextInput
+Open Text Input Component
 ===========================
 
-Open Text Input Component
-
-whopp
+A question component that allows the learner to input open text based upon a question stem.
