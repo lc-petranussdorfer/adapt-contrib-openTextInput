@@ -27,21 +27,26 @@ define(function(require) {
             // Use this to set the model status to complete.
             // This can be used with inview or when the model is set to complete/the question has been answered.
             this.setCompletionStatus();
+
+            // Read the last saved answer and paste it into the textarea
             this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
+
             QuestionView.prototype.postRender.apply(this);            
         },
         preRender: function() {
             this.setupDefaultSettings();            
             this.resetQuestion({resetAttempts:true, initialisingScreen:true});
-        
+            // we do not need feedbackarrays
             this.listenTo(this.model, 'change:_isEnabled', this.onEnabledChanged);
         },
         setupDefaultSettings: function() {
+            // initialize saved status
             this.model.set("_isSaved", false);
             
             QuestionView.prototype.setupDefaultSettings.apply(this);
         },
         supports_html5_storage: function() {
+            // check for html5 local storage support
             try {
                 return 'localStorage' in window && window['localStorage'] !== null;
             } catch (e) {
@@ -49,6 +54,7 @@ define(function(require) {
             }
         },
         canSubmit: function() {
+            // function copied from textInput component
             var canSubmit = true;
             if ($(".opentextinput-item-textbox").val() == "") {
                 canSubmit = false;
@@ -56,6 +62,7 @@ define(function(require) {
             return canSubmit;
         },
         forceFixedPositionFakeScroll: function() {
+            // function copied from textInput component
             if (Modernizr.touch) {
                 _.defer(function() {
                     window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
@@ -63,25 +70,21 @@ define(function(require) {
             }
         },
         storeUserAnswer: function() {
+            // store user answer from textarea to localstorage
             var userAnswer = this.$(".opentextinput-item-textbox").val();
+            // use unique identifier to avoid collisions with other components
             var identifier = this.model.get('_id') + "-OpenTextInput-UserAnswer";
-            // check localstorage
-            if (this.supports_html5_storage()) {
+            
+            if (this.supports_html5_storage()) {                
                 localStorage.setItem(identifier, userAnswer);
                 this.model.set("_isSaved", true);
-
             } else {
-                alert("No local storage available");
+                console.warn("No local storage available");
             }
         },
         onSaveClicked: function(event) {
             event.preventDefault();
-
-            /*console.log("UserAnswer: " + userAnswer);
-            console.log("Model Wert",this.model.get("_isSaved"));*/
-
             this.storeUserAnswer();
-
         },
         onSubmitClicked: function(event) {
             event.preventDefault();
@@ -98,6 +101,7 @@ define(function(require) {
 
             this.storeUserAnswer();
             this.showFeedback();
+            // no marks for this question
         },
         onEnabledChanged: function() {
             this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get('_isEnabled'));
@@ -107,18 +111,14 @@ define(function(require) {
         },
         onUserAnswerShown: function() {            
             this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
-
         },
         getUserAnswer: function () {
-
             var identifier = this.model.get('_id') + "-OpenTextInput-UserAnswer";
             var userAnswer = '';
             if (this.supports_html5_storage()) {
                 userAnswer = localStorage.getItem(identifier);
-                this.model.set("_isSaved", true);
-
             } else {
-                alert("No local storage available");
+                console.warn("No local storage available");
             }
             return userAnswer;
         },
