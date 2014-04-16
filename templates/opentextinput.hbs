@@ -1,4 +1,4 @@
-{{! Maintainers - Kev Adsett}}
+{{! Maintainers - LearnChamp}}
 <div class="component-inner opentextinput-inner">
     {{#if title}}
     <div class="component-title opentextinput-title">
@@ -14,12 +14,10 @@
         </div>
     </div>
     {{/if}}
-    {{! complex unless and if combination to set the correct classes for CSS to use in showing marking and disabled states}}
-    <div class="component-widget opentextinput-widget {{#unless _isEnabled}} disabled {{#if _isComplete}} complete submitted user {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
-        <div class="opentextinput-item item clearfix ">
-            <textarea rows="2" cols="7" class="opentextinput-item-textbox" placeholder="{{{placeholder}}}"></textarea>
-        </div>
-        {{! if statements set default button labels if unset in json}}
+    <div class="component-widget opentextinput-widget">
+    <textarea rows="2" cols="7" class="opentextinput-item-textbox" placeholder="{{{placeholder}}}"></textarea>
+    
+    {{! if statements set default button labels if unset in json}}
         <div class="buttons">
             <a href="#" class="button save" value="Save">
                 <span>  
@@ -31,13 +29,8 @@
                 <span>  
                     {{{buttons.submit}}} 
                 </span>
-            </a>
-            <a href="#" class="button reset">
-                <span>
-                    {{{buttons.reset}}} 
-                </span>
-            </a>
-            <a href="#" class="button model">
+            </a> 
+             <a href="#" class="button model">
                 <span> 
                     {{{buttons.showCorrectAnswer}}} 
                 </span>
@@ -46,7 +39,7 @@
                 <span>
                     {{{buttons.hideCorrectAnswer}}} 
                 </span>
-            </a>            
+            </a>             
         </div>
     </div>
 </div>
