@@ -18,6 +18,33 @@ define(function(require) {
 			"blur input": "forceFixedPositionFakeScroll"
 		},
 
+
+ setupDefaultSettings: function() {
+ 	this.model.set("_isSaved", false);
+
+ 	QuestionView.prototype.setupDefaultSettings.apply(this);
+ },
+
+  onSaveClicked: function(event) {
+  	 event.preventDefault();
+  	// ToDo
+
+
+  	// Console log
+   var userAnswer = this.$(".opentextinput-item-textbox").val();
+   console.log("UserAnswer: " + userAnswer);
+   console.log("Model Wert",this.model.get("_isSaved"));
+
+    // check localstorage
+
+    	// if yes
+    	// Write to localstorage
+    	 this.model.set("_isSaved", true);
+
+    	// if no
+    	//alert("No local storage available");
+  },
+
 		forceFixedPositionFakeScroll: function() {
 			if (Modernizr.touch) {
 				_.defer(function() {
