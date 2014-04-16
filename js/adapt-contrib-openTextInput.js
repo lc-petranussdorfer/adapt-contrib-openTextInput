@@ -5,106 +5,106 @@
  */
 
 define(function(require) {
-	var QuestionView = require('coreViews/questionView');
-	var Adapt = require('coreJS/adapt');
+    var QuestionView = require('coreViews/questionView');
+    var Adapt = require('coreJS/adapt');
 
-	var OpenTextInput = QuestionView.extend({
-		events: {
-			"click .opentextinput-widget .button.save": "onSaveClicked",
-			"click .opentextinput-widget .button.submit": "onSubmitClicked",
-			"click .opentextinput-widget .button.reset": "onResetClicked",
-			"click .opentextinput-widget .button.model": "onModelAnswerClicked",
-			"click .opentextinput-widget .button.user": "onUserAnswerClicked",
-			"blur input": "forceFixedPositionFakeScroll"
-		},
-
-
- setupDefaultSettings: function() {
- 	this.model.set("_isSaved", false);
-
- 	QuestionView.prototype.setupDefaultSettings.apply(this);
- },
-
-  onSaveClicked: function(event) {
-  	 event.preventDefault();
-  	// ToDo
+    var OpenTextInput = QuestionView.extend({
+        events: {
+            "click .opentextinput-widget .button.save": "onSaveClicked",
+            "click .opentextinput-widget .button.submit": "onSubmitClicked",
+            "click .opentextinput-widget .button.reset": "onResetClicked",
+            "click .opentextinput-widget .button.model": "onModelAnswerClicked",
+            "click .opentextinput-widget .button.user": "onUserAnswerClicked",
+            "blur input": "forceFixedPositionFakeScroll"
+        },
 
 
-  	// Console log
-   var userAnswer = this.$(".opentextinput-item-textbox").val();
-   console.log("UserAnswer: " + userAnswer);
-   console.log("Model Wert",this.model.get("_isSaved"));
+        setupDefaultSettings: function() {
+            this.model.set("_isSaved", false);
 
-    // check localstorage
+            QuestionView.prototype.setupDefaultSettings.apply(this);
+        },
 
-    	// if yes
-    	// Write to localstorage
-    	 this.model.set("_isSaved", true);
+        onSaveClicked: function(event) {
+            event.preventDefault();
+            // ToDo
 
-    	// if no
-    	//alert("No local storage available");
-  },
 
-		forceFixedPositionFakeScroll: function() {
-			if (Modernizr.touch) {
-				_.defer(function() {
-					window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
-				});
-			}
-		},
+            // Console log
+            var userAnswer = this.$(".opentextinput-item-textbox").val();
+            console.log("UserAnswer: " + userAnswer);
+            console.log("Model Wert", this.model.get("_isSaved"));
 
-		canSubmit: function() {
-			var canSubmit = true;
-			if ($(".opentextinput-item-textbox").val() == "") {
-				canSubmit = false;
-			}
-			return canSubmit;
-		},
+            // check localstorage
 
-		checkAnswerIsCorrect: function(possibleAnswers, userAnswer) {},
+            // if yes
+            // Write to localstorage
+            this.model.set("_isSaved", true);
 
-		cleanupUserAnswer: function(userAnswer) {
-			if (this.model.get('_allowsAnyCase')) {
-				userAnswer = userAnswer.toLowerCase();
-			}
-			if (this.model.get('_allowsPunctuation')) {
-				var userAnswerClean = userAnswer.replace(/[\.,-\/#!$£%\^&\*;:{}=\-_`~()]/g, "");
-				userAnswer = $.trim(userAnswerClean);
-			}
-			return userAnswer;
-		},
+            // if no
+            //alert("No local storage available");
+        },
 
-		markQuestion: function() {},
+        forceFixedPositionFakeScroll: function() {
+            if (Modernizr.touch) {
+                _.defer(function() {
+                    window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
+                });
+            }
+        },
 
-		onEnabledChanged: function() {
-			this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get('_isEnabled'));
-		},
+        canSubmit: function() {
+            var canSubmit = true;
+            if ($(".opentextinput-item-textbox").val() == "") {
+                canSubmit = false;
+            }
+            return canSubmit;
+        },
 
-		onModelAnswerShown: function() {
-			_.each(this.model.get('items'), function(item, index) {
-				this.$(".opentextinput-item-textbox").eq(index).val(item.answers[0]);
-			}, this);
-		},
+        checkAnswerIsCorrect: function(possibleAnswers, userAnswer) {},
 
-		onUserAnswerShown: function() {
-			_.each(this.model.get('items'), function(item, index) {
-				this.$(".opentextinput-item-textbox").eq(index).val(item.userAnswer);
-			}, this);
-		},
+        cleanupUserAnswer: function(userAnswer) {
+            if (this.model.get('_allowsAnyCase')) {
+                userAnswer = userAnswer.toLowerCase();
+            }
+            if (this.model.get('_allowsPunctuation')) {
+                var userAnswerClean = userAnswer.replace(/[\.,-\/#!$£%\^&\*;:{}=\-_`~()]/g, "");
+                userAnswer = $.trim(userAnswerClean);
+            }
+            return userAnswer;
+        },
 
-		postRender: function() {
-			QuestionView.prototype.postRender.apply(this);
-			this.setReadyStatus();
-		},
+        markQuestion: function() {},
 
-		storeUserAnswer: function() {
-			_.each(this.model.get('items'), function(item, index) {
-				item.userAnswer = this.$('.opentextinput-item-textbox').eq(index).val();
-			}, this);
-		}
+        onEnabledChanged: function() {
+            this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get('_isEnabled'));
+        },
 
-	});
+        onModelAnswerShown: function() {
+            _.each(this.model.get('items'), function(item, index) {
+                this.$(".opentextinput-item-textbox").eq(index).val(item.answers[0]);
+            }, this);
+        },
 
-	Adapt.register("opentextinput", OpenTextInput);
+        onUserAnswerShown: function() {
+            _.each(this.model.get('items'), function(item, index) {
+                this.$(".opentextinput-item-textbox").eq(index).val(item.userAnswer);
+            }, this);
+        },
+
+        postRender: function() {
+            QuestionView.prototype.postRender.apply(this);
+            this.setReadyStatus();
+        },
+
+        storeUserAnswer: function() {
+            _.each(this.model.get('items'), function(item, index) {
+                item.userAnswer = this.$('.opentextinput-item-textbox').eq(index).val();
+            }, this);
+        }
+
+    });
+
+    Adapt.register("opentextinput", OpenTextInput);
 
 });
