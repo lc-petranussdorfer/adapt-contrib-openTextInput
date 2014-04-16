@@ -30,8 +30,9 @@ define(function(require) {
         },
         setupDefaultSettings: function() {            
             this.model.set("_isSaved", false);
-
+            console.log("Initial UserAnswer: "+this.getUserAnswer());
             QuestionView.prototype.setupDefaultSettings.apply(this);
+            this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
         },
 
         // onSubmitClicked: function(event) {
@@ -103,6 +104,13 @@ define(function(require) {
             this.$(".opentextinput-item-textbox").val(this.model.get('modelAnswer'));
         },
         onUserAnswerShown: function() {
+
+            this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
+
+        },
+
+        getUserAnswer: function () {
+
             var identifier = this.model.get('_id') + "-OpenTextInput-UserAnswer";
             var userAnswer = '';
             if (this.supports_html5_storage()) {
@@ -112,8 +120,7 @@ define(function(require) {
             } else {
                 alert("No local storage available");
             }
-            this.$(".opentextinput-item-textbox").val(userAnswer);
-
+            return userAnswer;
         },
         postRender: function() {
             QuestionView.prototype.postRender.apply(this);
