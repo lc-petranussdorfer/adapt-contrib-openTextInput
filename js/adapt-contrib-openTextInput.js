@@ -12,8 +12,8 @@ define(function(require) {
         events: {
             "click .opentextinput-widget .button.save": "onSaveClicked",
             "click .opentextinput-widget .button.submit": "onSubmitClicked",
-            "click .opentextinput-widget .button.model":"onModelAnswerClicked",
-            "click .opentextinput-widget .button.user":"onUserAnswerClicked"
+            "click .opentextinput-widget .button.model": "onModelAnswerClicked",
+            "click .opentextinput-widget .button.user": "onUserAnswerClicked"
         },
         postRender: function() {
             // IMPORTANT! 
@@ -28,7 +28,13 @@ define(function(require) {
             // This can be used with inview or when the model is set to complete/the question has been answered.
             this.setCompletionStatus();
         },
-        setupDefaultSettings: function() {            
+        preRender: function() {
+            this.setupDefaultSettings();
+            this.resetQuestion({resetAttempts:true, initialisingScreen:true});
+        
+            this.listenTo(this.model, 'change:_isEnabled', this.onEnabledChanged);
+        },
+        setupDefaultSettings: function() {
             this.model.set("_isSaved", false);
             console.log("Initial UserAnswer: "+this.getUserAnswer());
             QuestionView.prototype.setupDefaultSettings.apply(this);
@@ -95,7 +101,7 @@ define(function(require) {
             this.$(".component-widget").addClass("submitted user");
 
             this.storeUserAnswer();
-            // this.showFeedback();
+            this.showFeedback();
         },
         onEnabledChanged: function() {
             this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get('_isEnabled'));
@@ -129,12 +135,27 @@ define(function(require) {
         onComplete: function(parameters) {
             this.model.set({
                 _isComplete: true,
-                _isEnabled: false,                
+                _isEnabled: false,
             });
             this.$(".component-widget").addClass("disabled");
             // this.showMarking();
             this.showUserAnswer();
             Adapt.trigger('questionView:complete', this);
+        },
+        showFeedback: function() {
+
+            this.model.set('feedbackAudio', this.model.get("feedback").audio);
+
+            Adapt.mediator.defaultCallback('questionView:feedback', function(feedback) {
+                Adapt.trigger('questionView:showFeedback', feedback);
+            });
+
+            Adapt.trigger('questionView:feedback', {
+                title: this.model.get('title'),
+                message: this.model.get('submittedMessage'),
+                audio: this.model.get('feedbackAudio')
+            });
+
         },
         markQuestion: function() {}
     });
