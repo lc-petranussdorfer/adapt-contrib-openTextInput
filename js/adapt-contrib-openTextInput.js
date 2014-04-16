@@ -27,24 +27,20 @@ define(function(require) {
             // Use this to set the model status to complete.
             // This can be used with inview or when the model is set to complete/the question has been answered.
             this.setCompletionStatus();
+            this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
+            QuestionView.prototype.postRender.apply(this);            
         },
         preRender: function() {
-            this.setupDefaultSettings();
+            this.setupDefaultSettings();            
             this.resetQuestion({resetAttempts:true, initialisingScreen:true});
         
             this.listenTo(this.model, 'change:_isEnabled', this.onEnabledChanged);
         },
         setupDefaultSettings: function() {
             this.model.set("_isSaved", false);
-            console.log("Initial UserAnswer: "+this.getUserAnswer());
+            
             QuestionView.prototype.setupDefaultSettings.apply(this);
-            this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
         },
-
-        // onSubmitClicked: function(event) {
-        //     event.preventDefault();
-        //     console.log("onSubmitClicked");
-        // },
         supports_html5_storage: function() {
             try {
                 return 'localStorage' in window && window['localStorage'] !== null;
@@ -109,12 +105,10 @@ define(function(require) {
         onModelAnswerShown: function() {
             this.$(".opentextinput-item-textbox").val(this.model.get('modelAnswer'));
         },
-        onUserAnswerShown: function() {
-
+        onUserAnswerShown: function() {            
             this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
 
         },
-
         getUserAnswer: function () {
 
             var identifier = this.model.get('_id') + "-OpenTextInput-UserAnswer";
@@ -127,10 +121,6 @@ define(function(require) {
                 alert("No local storage available");
             }
             return userAnswer;
-        },
-        postRender: function() {
-            QuestionView.prototype.postRender.apply(this);
-            this.setReadyStatus();
         },
         onComplete: function(parameters) {
             this.model.set({
