@@ -1,26 +1,22 @@
 {
-    "_id": "c-2100",
-    "_parentId": "b-05",
+    "_id": "c-9001",
+    "_parentId": "b-00",
     "_type": "component",
     "_component": "opentextinput",
     "_classes": "",
     "_layout": "full",
-    "title": "OpenTextInput",
-    "body": "Problem?",
-    "_attempts": 1,
-    "placeholder": "Enter answer here",
-    "_allowsAnyOrder": false,
-    "_allowsAnyCase": true,
-    "_allowsPunctuation": true,
+    "title": "Title of the problem",
+    "body": "Description of the problem.",
+    "placeholder": "Enter your answer here",
     "_questionWeight": 10,
     "buttons": {
-        "save": "SAVE",
+        "save": "",
         "submit": "",
-        "reset": "",
         "showCorrectAnswer": "",
         "hideCorrectAnswer": ""
     },
-    "feedback":{},
-    "submittedMessage": "You successfully submitted an Answer.",
-    "modelAnswer":"Answer to compare to."
+    "feedback": {
+        "submittedMessage": "You successfully submitted an Answer."
+    },    
+    "modelAnswer": "Answer to compare to."
 }
