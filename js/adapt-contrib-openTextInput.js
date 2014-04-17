@@ -142,7 +142,7 @@ define(function(require) {
 
             Adapt.trigger('questionView:feedback', {
                 title: this.model.get('title'),
-                message: this.model.get('submittedMessage'),
+                message: this.model.get('feedback').submittedMessage,
                 audio: this.model.get('feedbackAudio')
             });
 
