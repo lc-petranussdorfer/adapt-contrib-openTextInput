@@ -48,12 +48,13 @@
     }
     .opentextinput-widget {
         &.submitted {
-            .button.submit {
+            .button.submit, .button.save{
                 display: none;
             }
             .button.reset {
                 display: inline-block;
             }
+
             .opentextinput-item {
                 background-color: @item-disabled-color;
             }
