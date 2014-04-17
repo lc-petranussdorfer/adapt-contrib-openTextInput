@@ -4,18 +4,30 @@
  * Maintainers - LearnChamp Petra Nussdorfer <petra.nussdorfer@learnchamp.com>
  */
 
+
 define(function(require) {
     var QuestionView = require('coreViews/questionView');
     var Adapt = require('coreJS/adapt');
+
+    window.onbeforeunload = function(e) {
+ 			 return 'Möchten Sie fortfahren ohne zu speichern?';
+		};
 
     var OpenTextInput = QuestionView.extend({
         events: {
             "click .opentextinput-widget .button.save": "onSaveClicked",
             "click .opentextinput-widget .button.submit": "onSubmitClicked",
             "click .opentextinput-widget .button.model": "onModelAnswerClicked",
-            "click .opentextinput-widget .button.user": "onUserAnswerClicked"
+            "click .opentextinput-widget .button.user": "onUserAnswerClicked",
+            "change .opentextinput-item-textbox" : "onTextBoxChange"
+        },
+
+        onTextBoxChange: function(){
+					
         },
         postRender: function() {
+
+
             // IMPORTANT! 
             // Both of the following methods need to be called inside your view.
 
@@ -83,6 +95,7 @@ define(function(require) {
             }
         },
         onSaveClicked: function(event) {
+        	console.log(this.model.get("_isSaved"));
             event.preventDefault();
             this.storeUserAnswer();
         },
