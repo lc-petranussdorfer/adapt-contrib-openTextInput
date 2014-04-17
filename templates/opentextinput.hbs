@@ -15,7 +15,8 @@
     </div>
     {{/if}}
     <div class="component-widget opentextinput-widget">
-    <textarea rows="2" cols="7" class="opentextinput-item-textbox" placeholder="{{{placeholder}}}"></textarea>
+    <div class="countCharacters"></div>
+    <textarea class="opentextinput-item-textbox" placeholder="{{{placeholder}}}. Allowed Characters: {{{allowedCharacters}}}" maxlength="{{{allowedCharacters}}}"></textarea>
     
     {{! if statements set default button labels if unset in json}}
         <div class="buttons">

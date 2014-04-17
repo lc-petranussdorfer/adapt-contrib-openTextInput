@@ -1,17 +1,18 @@
 /*
  * adapt-contrib-openTextInput
  * License - http://github.com/adaptlearning/adapt_framework/LICENSE
- * Maintainers - LearnChamp Petra Nussdorfer <petra.nussdorfer@learnchamp.com>
+ * Maintainers
+ * Thomas Eitler <thomas.eitler@learnchamp.com>
+ * Barbara Fellner <me@barbarafellner.at>
+ * Petra Nussdorfer <petra.nussdorfer@learnchamp.com>
  */
 
 
 define(function(require) {
     var QuestionView = require('coreViews/questionView');
     var Adapt = require('coreJS/adapt');
+    var countCharacter = 0;
 
-    window.onbeforeunload = function(e) {
- 			 return 'Möchten Sie fortfahren ohne zu speichern?';
-		};
 
     var OpenTextInput = QuestionView.extend({
         events: {
@@ -19,15 +20,24 @@ define(function(require) {
             "click .opentextinput-widget .button.submit": "onSubmitClicked",
             "click .opentextinput-widget .button.model": "onModelAnswerClicked",
             "click .opentextinput-widget .button.user": "onUserAnswerClicked",
-            "change .opentextinput-item-textbox" : "onTextBoxChange"
+            "keyup .opentextinput-item-textbox": "onKeyUpTextarea"
         },
 
-        onTextBoxChange: function(){
-					
+
+        onKeyUpTextarea: function() {
+            this.countCharacter();
+        },
+        countCharacter: function() {
+            var charLengthOfTextarea = this.$(".opentextinput-item-textbox").val().length;
+            var allowedCharacters = this.model.get('allowedCharacters');
+            if (allowedCharacters != null) {
+                var charactersLeft = allowedCharacters - charLengthOfTextarea;
+                this.$(".countCharacters").html("Permitted number of characters left: " + charactersLeft);
+            } else {
+                this.$(".countCharacters").html("Number of Characters: " + charLengthOfTextarea);
+            }
         },
         postRender: function() {
-
-
             // IMPORTANT! 
             // Both of the following methods need to be called inside your view.
 
@@ -43,18 +53,23 @@ define(function(require) {
             // Read the last saved answer and paste it into the textarea
             this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
 
-            QuestionView.prototype.postRender.apply(this);            
+            this.countCharacter();
+
+            QuestionView.prototype.postRender.apply(this);
         },
         preRender: function() {
-            this.setupDefaultSettings();            
-            this.resetQuestion({resetAttempts:true, initialisingScreen:true});
+            this.setupDefaultSettings();
+            this.resetQuestion({
+                resetAttempts: true,
+                initialisingScreen: true
+            });
             // we do not need feedbackarrays
             this.listenTo(this.model, 'change:_isEnabled', this.onEnabledChanged);
         },
         setupDefaultSettings: function() {
             // initialize saved status
             this.model.set("_isSaved", false);
-            
+
             QuestionView.prototype.setupDefaultSettings.apply(this);
         },
         supports_html5_storage: function() {
@@ -86,8 +101,8 @@ define(function(require) {
             var userAnswer = this.$(".opentextinput-item-textbox").val();
             // use unique identifier to avoid collisions with other components
             var identifier = this.model.get('_id') + "-OpenTextInput-UserAnswer";
-            
-            if (this.supports_html5_storage()) {                
+
+            if (this.supports_html5_storage()) {
                 localStorage.setItem(identifier, userAnswer);
                 this.model.set("_isSaved", true);
             } else {
@@ -95,7 +110,7 @@ define(function(require) {
             }
         },
         onSaveClicked: function(event) {
-        	console.log(this.model.get("_isSaved"));
+            console.log(this.model.get("_isSaved"));
             event.preventDefault();
             this.storeUserAnswer();
         },
@@ -122,10 +137,10 @@ define(function(require) {
         onModelAnswerShown: function() {
             this.$(".opentextinput-item-textbox").val(this.model.get('modelAnswer'));
         },
-        onUserAnswerShown: function() {            
+        onUserAnswerShown: function() {
             this.$(".opentextinput-item-textbox").val(this.getUserAnswer());
         },
-        getUserAnswer: function () {
+        getUserAnswer: function() {
             var identifier = this.model.get('_id') + "-OpenTextInput-UserAnswer";
             var userAnswer = '';
             if (this.supports_html5_storage()) {

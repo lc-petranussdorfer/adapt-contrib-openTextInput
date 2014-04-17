@@ -9,6 +9,7 @@
     "body": "Description of the problem.",
     "placeholder": "Enter your answer here",
     "_questionWeight": 10,
+    "allowedCharacters": 50,
     "buttons": {
         "save": "",
         "submit": "",
