@@ -20,6 +20,7 @@
     
     {{! if statements set default button labels if unset in json}}
         <div class="buttons">
+        {{! The default label should be defined in the course.json}}
             <a href="#" class="button save" value="Save">
                 <span>  
                 {{#unless buttons.save}} Save {{/unless}}
