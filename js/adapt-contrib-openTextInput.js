@@ -6,40 +6,84 @@
  * Barbara Fellner <me@barbarafellner.at>
  * Petra Nussdorfer <petra.nussdorfer@learnchamp.com>
  */
+
+
+
+
 define(function(require) {
   var QuestionView = require('coreViews/questionView');
   var Adapt = require('coreJS/adapt');
+  var countCharacter = 0;
 
-  window.onbeforeunload = function(e) {
-    return 'Möchten Sie fortfahren ohne zu speichern?';
-  };
 
   var OpenTextInput = QuestionView.extend({
     events: {
       'click .opentextinput-widget .button.save': 'onSaveClicked',
       'click .opentextinput-widget .button.submit': 'onSubmitClicked',
       'click .opentextinput-widget .button.model': 'onModelAnswerClicked',
+      'click .opentextinput-widget .button.clear': 'onClearClicked',
       'click .opentextinput-widget .button.user': 'onUserAnswerClicked',
-      'change .opentextinput-item-textbox': 'onTextBoxChange'
+      'keyup .opentextinput-item-textbox': 'onKeyUpTextarea'
     },
-    onTextBoxChange: function() {},
+
+
+    onKeyUpTextarea: function() {
+      this.countCharacter();
+    },
+    countCharacter: function() {
+      var charLengthOfTextarea = this.$('.opentextinput-item-textbox').val().length;
+      var allowedCharacters = this.model.get('allowedCharacters');
+      if (allowedCharacters != null) {
+        var charactersLeft = allowedCharacters - charLengthOfTextarea;
+        this.$('.countCharacters').html('Permitted number of characters left: ' + charactersLeft);
+      } else {
+        this.$('.countCharacters').html('Number of Characters: ' + charLengthOfTextarea);
+      }
+    },
     postRender: function() {
-      // IMPORTANT! 
-      // Both of the following methods need to be called inside your view.
-
-      // Use this to set the model status to ready. 
-      // It should be used when telling Adapt that this view is completely loaded.
-      // This is sometimes used in conjunction with imageReady.
       this.setReadyStatus();
-
-      // Use this to set the model status to complete.
-      // This can be used with inview or when the model is set to complete/the question has been answered.
       this.setCompletionStatus();
 
       // Read the last saved answer and paste it into the textarea
       this.$('.opentextinput-item-textbox').val(this.getUserAnswer());
 
+      this.countCharacter();
+
+      if ((this.model.get('_layout') == 'right') || (this.model.get('_layout') == 'left')) {
+        this.$('.opentextinput-useranswer').css('width', '100%');
+        this.$('.opentextinput-modelanswer').css('width', '100%');
+        this.$('.opentextinput-modelanswer').css('display', 'none');
+        this.$('.model').css('visibility', 'visible');
+      } else {
+        this.$('.model').css('visibility', 'hidden');
+
+      }
+
       QuestionView.prototype.postRender.apply(this);
+    },
+
+    calculateWidths: function() {
+
+      if (this.model.get('_isSubmitted') && this.model.get('modelAnswer') != '') {
+
+        if (Adapt.device.screenSize != 'large') {
+          this.$('.opentextinput-useranswer').css('width', '100%');
+          this.$('.opentextinput-modelanswer').css('width', '100%');
+          this.$('.opentextinput-modelanswer').css('display', 'none');
+          this.$('.model').css('visibility', 'visible');
+        } else {
+          if ((this.model.get('_layout') == 'full')) {
+            console.log('i am here in full large');
+            this.$('.opentextinput-useranswer').css('width', '48%');
+            this.$('.opentextinput-modelanswer').css('width', '48%');
+            this.$('.opentextinput-modelanswer').css('display', 'inline-block');
+
+            this.$('.opentextinput-useranswer').css('display', 'inline-block');
+            this.$('.model').css('visibility', 'hidden');
+          }
+        }
+      }
+
     },
     preRender: function() {
       this.setupDefaultSettings();
@@ -47,8 +91,31 @@ define(function(require) {
         resetAttempts: true,
         initialisingScreen: true
       });
+
+      this.listenTo(Adapt, 'device:changed', this.calculateWidths, this);
+      this.listenTo(Adapt, 'device:resize', this.resizeControl, this);
+
+      this.setDeviceSize();
+
+
+
       // we do not need feedbackarrays
       this.listenTo(this.model, 'change:_isEnabled', this.onEnabledChanged);
+
+
+    },
+
+    setDeviceSize: function() {
+      if (Adapt.device.screenSize === 'large') {
+        this.model.set('_isDesktop', true);
+      } else {
+        this.model.set('_isDesktop', false)
+      }
+    },
+
+    resizeControl: function() {
+      this.setDeviceSize();
+      this.calculateWidths();
     },
     setupDefaultSettings: function() {
       // initialize saved status
@@ -94,10 +161,53 @@ define(function(require) {
       }
     },
     onSaveClicked: function(event) {
-      console.log(this.model.get('_isSaved'));
       event.preventDefault();
+
       this.storeUserAnswer();
+
+      var pushObject = {
+        title: '',
+        body: this.model.get('savedMessage'),
+        _timeout: 2000,
+        _callbackEvent: 'pageLevelProgress:stayOnPage'
+      };
+
+
+      Adapt.trigger('notify:push', pushObject);
     },
+
+    onClearClicked: function(event) {
+      event.preventDefault();
+
+      var promptObject = {
+        title: 'Clear Text',
+        body: 'Do you really want to delete your written text?',
+        _prompts: [{
+          promptText: 'Yes',
+          _callbackEvent: 'clickEvent:clearText',
+        }, {
+          promptText: 'No',
+          _callbackEvent: 'pageLevelProgress:stayOnPage'
+        }],
+        _showIcon: true
+      };
+
+
+      Adapt.on('clickEvent:clearText', function() {
+        // Error: Undefined is not a function
+        this.clearTextarea();
+      }, this);
+
+      Adapt.trigger('notify:prompt', promptObject);
+
+    },
+
+    clearTextarea: function(event) {
+      this.$('.opentextinput-item-textbox').val('');
+      this.storeUserAnswer();
+
+    },
+
     onSubmitClicked: function(event) {
       event.preventDefault();
 
@@ -111,20 +221,50 @@ define(function(require) {
       });
       this.$('.component-widget').addClass('submitted user');
 
+      var userAnswer = this.$('.opentextinput-item-textbox').val();
+      this.model.set('_userAnswer', userAnswer);
+
       this.storeUserAnswer();
-      this.showFeedback();
-      // no marks for this question
+
+      if (this.model.get('modelAnswer') == '') {
+        this.$('.button.model').addClass('hide-model');
+        this.$('.button.user').addClass('hide-user');
+      }
+
+      var pushObject = {
+        title: '',
+        body: this.model.get('submittedMessage'),
+        _timeout: 2000,
+        _callbackEvent: 'pageLevelProgress:stayOnPage'
+      };
+
+      this.calculateWidths();
+
+      Adapt.trigger('notify:push', pushObject);
+
     },
     onEnabledChanged: function() {
-      this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get(
-        '_isEnabled'));
+      this.$('.opentextinput-item-textbox').prop('disabled', !this.model.get('_isEnabled'));
     },
     onModelAnswerShown: function() {
-      this.$('.opentextinput-item-textbox').val(this.model.get(
-        'modelAnswer'));
+      this.$('.opentextinput-item-textbox').val(this.model.get('modelAnswer'));
+
+      if (this.model.get('_layout') === 'right' || this.model.get('_layout') === 'left' || (Adapt.device.screenSize != 'large')) {
+        this.$('.opentextinput-useranswer').css('display', 'none');
+        this.$('.opentextinput-modelanswer').css('display', 'inline-block');
+        this.$('.user').css('visibility', 'visible');
+      }
+
+
     },
     onUserAnswerShown: function() {
       this.$('.opentextinput-item-textbox').val(this.getUserAnswer());
+
+      if (this.model.get('_layout') === 'right' || this.model.get('_layout') === 'left' || (Adapt.device.screenSize != 'large')) {
+        this.$('.opentextinput-useranswer').css('display', 'inline-block');
+        this.$('.opentextinput-modelanswer').css('display', 'none');
+        this.$('.model').css('visibility', 'visible');
+      }
     },
     getUserAnswer: function() {
       var identifier = this.model.get('_id') + '-OpenTextInput-UserAnswer';
@@ -146,22 +286,7 @@ define(function(require) {
       this.showUserAnswer();
       Adapt.trigger('questionView:complete', this);
     },
-    showFeedback: function() {
 
-      this.model.set('feedbackAudio', this.model.get('feedback').audio);
-
-      Adapt.mediator.defaultCallback('questionView:feedback', function(
-        feedback) {
-        Adapt.trigger('questionView:showFeedback', feedback);
-      });
-
-      Adapt.trigger('questionView:feedback', {
-        title: this.model.get('title'),
-        message: this.model.get('feedback').submittedMessage,
-        audio: this.model.get('feedbackAudio')
-      });
-
-    },
     markQuestion: function() {}
   });
 

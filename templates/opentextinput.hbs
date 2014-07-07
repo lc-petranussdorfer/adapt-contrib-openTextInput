@@ -16,32 +16,33 @@
     {{/if}}
     <div class="component-widget opentextinput-widget">
     <div class="countCharacters"></div>
-    <textarea class="opentextinput-item-textbox" placeholder="{{{placeholder}}}" maxlength="{{{allowedCharacters}}}"></textarea>
+
+    <div class="opentextinput-answer-container">
+
+      <textarea class="opentextinput-item-textbox opentextinput-useranswer"
+    rows = {{{numberRows}}}
+    placeholder="{{{placeholder}}}" 
+    maxlength="{{{allowedCharacters}}}"></textarea>
+
+         <span class="opentextinput-modelanswer">{{{modelAnswer}}}</span>
+    </div>
+
+  
     
-    {{! if statements set default button labels if unset in json}}
         <div class="buttons">
-        {{! The default label should be defined in the course.json}}
+             {{> buttons this}}
             <a href="#" class="button save" value="Save">
                 <span>  
                 {{#unless buttons.save}} Save {{/unless}}
                     {{{buttons.save}}}
                 </span>
-            </a>
-             <a href="#" class="button submit" >
+            </a>    
+            <a href="#" class="button clear" value="Clear">
                 <span>  
-                    {{{buttons.submit}}} 
+                {{#unless buttons.clear}} Clear {{/unless}}
+                    {{{buttons.clear}}}
                 </span>
-            </a> 
-             <a href="#" class="button model">
-                <span> 
-                    {{{buttons.showCorrectAnswer}}} 
-                </span>
-            </a>
-            <a href="#" class="button user">
-                <span>
-                    {{{buttons.hideCorrectAnswer}}} 
-                </span>
-            </a>             
+            </a>  
         </div>
     </div>
 </div>

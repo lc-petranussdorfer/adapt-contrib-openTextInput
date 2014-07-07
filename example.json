@@ -6,6 +6,7 @@
     "_classes": "",
     "_layout": "full",
     "title": "Title of the problem",
+    "displayTitle":"Open Textinput Component",
     "body": "Description of the problem.",
     "placeholder": "Enter your answer here",
     "_questionWeight": 10,
