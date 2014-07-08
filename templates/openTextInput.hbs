@@ -20,7 +20,7 @@
     <div class="openTextInput-answer-container">
 
       <textarea class="openTextInput-item-textbox openTextInput-useranswer"
-    rows = {{{numberOfRows}}}
+    rows = {{{_numberOfRows}}}
     placeholder="{{{placeholder}}}" 
     maxlength="{{{allowedCharacters}}}"></textarea>
 
@@ -29,13 +29,13 @@
         <div class="buttons">
             <button href="#" class="openTextInput-save-button">
                 <span>  
-                {{#unless buttons.save}} Save {{/unless}}
-                    {{{buttons.save}}}
+                {{#unless _buttons.save}} Save {{/unless}}
+                    {{{_buttons.save}}}
             </button>    
             <a href="#" class="openTextInput-clear-button" value="Clear">
                 <span>  
-                {{#unless buttons.clear}} Clear {{/unless}}
-                    {{{buttons.clear}}}
+                {{#unless _buttons.clear}} Clear {{/unless}}
+                    {{{_buttons.clear}}}
                 </span>
             </a>  
         </div>
