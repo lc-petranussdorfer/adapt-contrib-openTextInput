@@ -2,7 +2,7 @@
     "_id": "c-9001",
     "_parentId": "b-00",
     "_type": "component",
-    "_component": "opentextinput",
+    "_component": "openTextInput",
     "_classes": "",
     "_layout": "full",
     "title": "Title of the problem",
