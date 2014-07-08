@@ -1,24 +1,24 @@
 {
-    "_id": "c-9001",
-    "_parentId": "b-00",
-    "_type": "component",
-    "_component": "openTextInput",
-    "_classes": "",
-    "_layout": "full",
-    "title": "Title of the problem",
-    "displayTitle":"Open Textinput Component",
-    "body": "Description of the problem.",
-    "placeholder": "Enter your answer here",
-    "_questionWeight": 10,
-    "allowedCharacters": 50,
-    "buttons": {
-        "save": "",
-        "submit": "",
-        "showCorrectAnswer": "",
-        "hideCorrectAnswer": ""
-    },
-    "feedback": {
-        "submittedMessage": "You successfully submitted an Answer."
-    },    
-    "modelAnswer": "Answer to compare to."
-}
+  "_id": "c-40",
+  "_parentId": "b-30",
+  "_type": "component",
+  "_component": "openTextInput",
+  "_classes": "",
+  "_layout": "full",
+  "title": "Title of the problem",
+  "displayTitle": "Open TextInput Component",
+  "body": "Description of the problem.",
+  "placeholder": "Enter your answer here",
+  "_allowedCharacters": 200,
+  "_numberOfRows": 4,
+  "modelAnswer": "Answer to compare to.",
+  "savedMessage": "Your text has been saved",
+  "submittedMessage": "Your answer has been submitted",
+  "_buttons": {
+    "save": "Save",
+    "submit": "Submit",
+    "showModelAnswer": "Show correct answer",
+    "showUserAnswer": "Hide correct answer",
+    "clear": "Clear"
+  }
+},
