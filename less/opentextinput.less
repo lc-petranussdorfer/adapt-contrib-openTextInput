@@ -1,6 +1,6 @@
  /* Opera/IE 8+ */
- .opentextinput-component {
-     .opentextinput-item {
+ .openTextInput-component {
+     .openTextInput-item {
          background-color: @primary-color;
          padding: @item-padding;
          position:relative;
@@ -15,10 +15,10 @@
          cursor: default;
          color: @inverted-foreground-color;
      }
-     .opentextinput-item-prefix {
+     .openTextInput-item-prefix {
          width:20%;
      }
-     .opentextinput-item-textbox {
+     .openTextInput-item-textbox {
          font-family:'Open Sans', sans-serif;
          font-weight: 300;
          -webkit-box-sizing: border-box;
@@ -32,10 +32,10 @@
          min-height: 50px;
          resize: none;
      }
-     .opentextinput-item-suffix {
+     .openTextInput-item-suffix {
          width:10%;
      }
-     .opentextinput-modelanswer {
+     .openTextInput-modelanswer {
          display: none;
          width: 48%;
          min-height: 50px;
@@ -59,47 +59,14 @@
          word-wrap: break-word;
          float: left;
      }
-     .button {
-         outline: none;
-         text-decoration: none;
-         padding: @button-padding;
-         color: @button-text-color;
-         background-color: @button-color;
-         display: none;
-         margin-top:8px;
-         &.submit, &.save, &.clear {
-             display: inline-block;
-         }
-     }
-     .opentextinput-widget {
-         &.submitted {
-             .button.submit, .button.save, .button.reset, .button.clear {
-                 display: none;
-             }
-             .opentextinput-item {
+    
+     .openTextInput-widget {
+             .openTextInput-item {
                  background-color: @item-disabled-color;
              }
          }
-         &.user {
-             .button.model {
-                 display: inline-block;
-             }
-         }
-         &.model {
-             .button.user {
-                 display: inline-block;
-             }
-             .opentextinput-select-icon {
-                 display: none;
-             }
-         }
-         &.disabled {
-             .button.reset {
-                 display: none;
-             }
-         }
      }
-     .opentextinput-item-state {
+     .openTextInput-item-state {
          background: none;
          position: absolute;
          right: (@icon-size/2);
@@ -117,8 +84,4 @@
              background-color: @button-hover-color;
          }
      }
- }
- .hide-model, .hide-user {
-     display: none !important;
-     visibility: hidden !important;
  }

@@ -1,46 +1,41 @@
 {{! Maintainers - LearnChamp}}
-<div class="component-inner opentextinput-inner">
-    {{#if title}}
-    <div class="component-title opentextinput-title">
-        <h4 class="component-title-inner opentextinput-title-inner">
-            {{{title}}}
-        </h4>
+<div class="component-inner openTextInput-inner">
+    {{> component this}}
+    <div class="component-widget openTextInput-widget">
+    <div class="openTextInput-count-characters">
+    <span class="openTextInput-count-text">
+        {{#if _allowedCharacters}}
+            {{remainingCharactersText}}
+        {{else}}
+            {{characterCountText}}
+        {{/if}}
+    </span>
+    <span class="openTextInput-count-amount">
+        
+    </span>
     </div>
-    {{/if}}
-    {{#if body}}
-    <div class="component-body opentextinput-body">
-        <div class="component-body-inner opentextinput-body-inner">
-            {{{body}}}
-        </div>
-    </div>
-    {{/if}}
-    <div class="component-widget opentextinput-widget">
-    <div class="countCharacters"></div>
 
-    <div class="opentextinput-answer-container">
-
-      <textarea class="opentextinput-item-textbox opentextinput-useranswer"
-    rows = {{{numberRows}}}
+    <div class="openTextInput-answer-container">
+      <textarea class="openTextInput-item-textbox openTextInput-useranswer"
+    rows = {{{_numberOfRows}}}
     placeholder="{{{placeholder}}}" 
-    maxlength="{{{allowedCharacters}}}"></textarea>
-
-         <span class="opentextinput-modelanswer">{{{modelAnswer}}}</span>
+    maxlength="{{{allowedCharacters}}}">
+        {{#if _userAnswer}}
+            {{_userAnswer}}
+        {{/if}}
+    </textarea>
+         <span class="openTextInput-modelanswer">{{{modelAnswer}}}</span>
     </div>
-
-  
-    
         <div class="buttons">
-             {{> buttons this}}
-            <a href="#" class="button save" value="Save">
+            <button href="#" class="openTextInput-save-button">
                 <span>  
-                {{#unless buttons.save}} Save {{/unless}}
-                    {{{buttons.save}}}
-                </span>
-            </a>    
-            <a href="#" class="button clear" value="Clear">
+                {{#unless _buttons.save}} Save {{/unless}}
+                    {{{_buttons.save}}}
+            </button>    
+            <a href="#" class="openTextInput-clear-button" value="Clear">
                 <span>  
-                {{#unless buttons.clear}} Clear {{/unless}}
-                    {{{buttons.clear}}}
+                {{#unless _buttons.clear}} Clear {{/unless}}
+                    {{{_buttons.clear}}}
                 </span>
             </a>  
         </div>
