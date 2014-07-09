@@ -1,29 +1,29 @@
 {{! Maintainers - LearnChamp}}
 <div class="component-inner openTextInput-inner">
-    {{#if title}}
-    <div class="component-title openTextInput-title">
-        <h4 class="component-title-inner openTextInput-title-inner">
-            {{{title}}}
-        </h4>
-    </div>
-    {{/if}}
-    {{#if body}}
-    <div class="component-body openTextInput-body">
-        <div class="component-body-inner openTextInput-body-inner">
-            {{{body}}}
-        </div>
-    </div>
-    {{/if}}
+    {{> component this}}
     <div class="component-widget openTextInput-widget">
-    <div class="countCharacters"></div>
+    <div class="openTextInput-count-characters">
+    <span class="openTextInput-count-text">
+        {{#if _allowedCharacters}}
+            {{remainingCharactersText}}
+        {{else}}
+            {{characterCountText}}
+        {{/if}}
+    </span>
+    <span class="openTextInput-count-amount">
+        
+    </span>
+    </div>
 
     <div class="openTextInput-answer-container">
-
       <textarea class="openTextInput-item-textbox openTextInput-useranswer"
     rows = {{{_numberOfRows}}}
     placeholder="{{{placeholder}}}" 
-    maxlength="{{{allowedCharacters}}}"></textarea>
-
+    maxlength="{{{allowedCharacters}}}">
+        {{#if _userAnswer}}
+            {{_userAnswer}}
+        {{/if}}
+    </textarea>
          <span class="openTextInput-modelanswer">{{{modelAnswer}}}</span>
     </div>
         <div class="buttons">
