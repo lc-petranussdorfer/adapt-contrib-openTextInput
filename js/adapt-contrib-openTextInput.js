@@ -38,7 +38,12 @@ define(function(require) {
             if (this.model.get('_isComplete')) {
                 this.disableButtons();
                 this.disableTextarea();
-                this.showUserAnswer();
+                if (!this.model.get('modelAnswer')) {
+                    this.$('.openTextInput-action-button')
+                        .prop('disabled', true);
+                } else {
+                    this.showUserAnswer();
+                }
             }
         },
         getUserAnswer: function() {
@@ -166,7 +171,7 @@ define(function(require) {
             this.storeUserAnswer();
             this.disableButtons();
             this.disableTextarea();
-            if (this.model.get('modelAnswer') == "") {
+            if (!this.model.get('modelAnswer')) {
                 this.$('.openTextInput-action-button')
                     .prop('disabled', true);
             } else {
