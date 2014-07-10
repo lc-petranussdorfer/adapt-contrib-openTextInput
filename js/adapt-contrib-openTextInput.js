@@ -19,13 +19,55 @@ define(function(require) {
     var OpenTextInput = ComponentView.extend({
 
         events: {
-            'click .openTextInput-save-button': 'onSaveClicked',
-            'click .openTextInput-submit-button': 'onSubmitClicked',
-            'click .openTextInput-model-button': 'onModelAnswerClicked',
-            'click .openTextInput-clear-button': 'onClearClicked',
-            'click .openTextInput-user-button': 'onUserAnswerClicked',
+            /*            'click .openTextInput-save-button': 'onSaveClicked',
+                        'click .openTextInput-submit-button': 'onSubmitClicked',
+                        'click .openTextInput-model-button': 'onModelAnswerClicked',
+                        'click .openTextInput-clear-button': 'onClearClicked',
+                        'click .openTextInput-user-button': 'onUserAnswerClicked',*/
             'keyup .openTextInput-item-textbox': 'onKeyUpTextarea'
         },
+
+        preRender: function() {
+            // Read the last saved answer and paste it into the textarea
+            if (!this.model.get('_userAnswer')) {
+                var userAnswer = this.getUserAnswer();
+                if (userAnswer) {
+                    this.model.set('_userAnswer', userAnswer);
+                    this.countCharacter();
+                }
+            }
+        },
+
+        postRender: function() {
+            //set component to ready
+            this.setReadyStatus();
+
+            if ((this.model.get('_layout') == 'right') || (this.model.get('_layout') == 'left')) {
+                this.$('.opentextinput-useranswer').css('width', '100%');
+                this.$('.opentextinput-modelanswer').css('width', '100%');
+                this.$('.opentextinput-modelanswer').css('display', 'none');
+                this.$('.model').css('visibility', 'visible');
+            } else {
+                this.$('.model').css('visibility', 'hidden');
+
+            }
+
+        },
+         getUserAnswer: function() {
+            var identifier = this.model.get('_id') + '-OpenTextInput-UserAnswer';
+            var userAnswer = '';
+
+            if (this.supports_html5_storage()) {
+                userAnswer = localStorage.getItem(identifier);
+                if(userAnswer) {
+                    return userAnswer;
+                }
+            } else {
+                console.warn('No local storage available');
+            }
+            return false;
+        }
+        
 
 
         /*onKeyUpTextarea: function() {
@@ -42,48 +84,6 @@ define(function(require) {
                 this.$('.countCharacters').html('Number of Characters: ' + charLengthOfTextarea);
             }
         },*/
-
-        preRender: function() {
-
-            this.setupDefaultSettings();
-            this.resetQuestion({
-                resetAttempts: true,
-                initialisingScreen: true
-            });
-
-            this.listenTo(Adapt, 'device:changed', this.calculateWidths, this);
-            this.listenTo(Adapt, 'device:resize', this.resizeControl, this);
-
-            this.setDeviceSize();
-
-
-
-            // we do not need feedbackarrays
-            this.listenTo(this.model, 'change:_isEnabled', this.onEnabledChanged);
-
-
-        },
-
-        postRender: function() {
-            this.setReadyStatus();
-            this.setCompletionStatus();
-
-            // Read the last saved answer and paste it into the textarea
-            this.$('.opentextinput-item-textbox').val(this.getUserAnswer());
-
-            this.countCharacter();
-
-            if ((this.model.get('_layout') == 'right') || (this.model.get('_layout') == 'left')) {
-                this.$('.opentextinput-useranswer').css('width', '100%');
-                this.$('.opentextinput-modelanswer').css('width', '100%');
-                this.$('.opentextinput-modelanswer').css('display', 'none');
-                this.$('.model').css('visibility', 'visible');
-            } else {
-                this.$('.model').css('visibility', 'hidden');
-
-            }
-
-        },
 
         /*calculateWidths: function() {
 
@@ -272,16 +272,7 @@ define(function(require) {
                 this.$('.model').css('visibility', 'visible');
             }
         },
-        getUserAnswer: function() {
-            var identifier = this.model.get('_id') + '-OpenTextInput-UserAnswer';
-            var userAnswer = '';
-            if (this.supports_html5_storage()) {
-                userAnswer = localStorage.getItem(identifier);
-            } else {
-                console.warn('No local storage available');
-            }
-            return userAnswer;
-        },
+       
         onComplete: function(parameters) {
             this.model.set({
                 _isComplete: true,
