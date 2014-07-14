@@ -9,7 +9,7 @@
 
 define(function(require) {
 
-    var ComponentView = require('coreViews/questionView');
+    var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
     var OpenTextInput = ComponentView.extend({
