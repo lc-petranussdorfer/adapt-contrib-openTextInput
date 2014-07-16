@@ -22,13 +22,34 @@ define(function(require) {
         preRender: function() {
             this.listenTo(this.model, 'change:_isSaved', this.onSaveChanged);
             this.listenTo(this.model, 'change:_userAnswer', this.onUserAnswerChanged);
-            // Read the last saved answer and paste it into the textarea
+            //Adapt.router.set('_canNavigate', false, {pluginName:'_openTextInput'});
+            //Adapt.on('navigation:backButton', this.unsavedChangesNotification);
             if (!this.model.get('_userAnswer')) {
                 var userAnswer = this.getUserAnswer();
                 if (userAnswer) {
                     this.model.set('_userAnswer', userAnswer);
                 }
             }
+        },
+        unsavedChangesNotification: function() {
+                event.preventDefault();
+                var promptObject = {
+                    title: this.model.get('unsavedChangesNotificationTitle'),
+                    body: this.model.get('unsavedChangesNotificationBody'),
+                    _prompts: [{
+                        promptText: 'Yes',
+                        _callbackEvent: '_openTextInput:save',
+                    }, {
+                        promptText: 'No',
+                        _callbackEvent: '_openTextInput:donotSave'
+                    }],
+                    _showIcon: true
+                };
+                Adapt.once('_openTextInput:save', function() {
+                    this.storeUserAnswer();
+                }, this);
+
+                Adapt.trigger('notify:prompt', promptObject);
         },
         postRender: function() {
             //set component to ready
@@ -124,8 +145,8 @@ define(function(require) {
             event.preventDefault();
 
             var promptObject = {
-                title: 'Clear Text',
-                body: 'Do you really want to delete your written text?',
+                title: this.model.get('clearNotificationTitle'),
+                body: this.model.get('clearNotificationBody'),
                 _prompts: [{
                     promptText: 'Yes',
                     _callbackEvent: '_openTextInput:clearText',
