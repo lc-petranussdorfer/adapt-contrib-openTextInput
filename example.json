@@ -1,4 +1,4 @@
-{
+ {
     "_id": "c-400",
     "_parentId": "b-32",
     "_type": "component",
@@ -13,7 +13,7 @@
     "remainingCharactersText": "Characters left",
     "characterCountText": "Amount of Characters",
     "_numberOfRows": 4,
-    "_isAllowedToNavigate": "true",
+    "_isAllowedToNavigate": false,
     "clearNotificationTitle": "Title: Clear Text",
     "clearNotificationBody": "Clear Notification Body",
     "unsavedChangesNotificationTitle": "Body: Do you really want to delete your written text?",
@@ -28,4 +28,4 @@
         "showUserAnswer": "Hide correct answer",
         "clear": "Clear"
     }
-}, 
+},

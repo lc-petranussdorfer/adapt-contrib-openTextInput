@@ -31,26 +31,26 @@ define(function(require) {
                 }
             }
         },
-        unsavedChangesNotification: function() {
-                event.preventDefault();
-                var promptObject = {
-                    title: this.model.get('unsavedChangesNotificationTitle'),
-                    body: this.model.get('unsavedChangesNotificationBody'),
-                    _prompts: [{
-                        promptText: 'Yes',
-                        _callbackEvent: '_openTextInput:save',
-                    }, {
-                        promptText: 'No',
-                        _callbackEvent: '_openTextInput:donotSave'
-                    }],
-                    _showIcon: true
-                };
-                Adapt.once('_openTextInput:save', function() {
-                    this.storeUserAnswer();
-                }, this);
+        // unsavedChangesNotification: function() {
+        //         event.preventDefault();
+        //         var promptObject = {
+        //             title: this.model.get('unsavedChangesNotificationTitle'),
+        //             body: this.model.get('unsavedChangesNotificationBody'),
+        //             _prompts: [{
+        //                 promptText: 'Yes',
+        //                 _callbackEvent: '_openTextInput:save',
+        //             }, {
+        //                 promptText: 'No',
+        //                 _callbackEvent: '_openTextInput:donotSave'
+        //             }],
+        //             _showIcon: true
+        //         };
+        //         Adapt.once('_openTextInput:save', function() {
+        //             this.storeUserAnswer();
+        //         }, this);
 
-                Adapt.trigger('notify:prompt', promptObject);
-        },
+        //         Adapt.trigger('notify:prompt', promptObject);
+        // },
         postRender: function() {
             //set component to ready
             this.$textbox = this.$('.openTextInput-item-textbox');
