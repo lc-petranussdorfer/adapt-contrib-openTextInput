@@ -22,8 +22,8 @@ define(function(require) {
         preRender: function() {
             this.listenTo(this.model, 'change:_isSaved', this.onSaveChanged);
             this.listenTo(this.model, 'change:_userAnswer', this.onUserAnswerChanged);
-            //Adapt.router.set('_canNavigate', false, {pluginName:'_openTextInput'});
-            //Adapt.on('navigation:backButton', this.unsavedChangesNotification);
+            Adapt.router.set('_canNavigate', false, {pluginName:'_openTextInput'});
+            this.listenToOnce(Adapt, 'navigation:backButton', this.unsavedChangesNotification);
             if (!this.model.get('_userAnswer')) {
                 var userAnswer = this.getUserAnswer();
                 if (userAnswer) {
@@ -31,26 +31,33 @@ define(function(require) {
                 }
             }
         },
-        // unsavedChangesNotification: function() {
-        //         event.preventDefault();
-        //         var promptObject = {
-        //             title: this.model.get('unsavedChangesNotificationTitle'),
-        //             body: this.model.get('unsavedChangesNotificationBody'),
-        //             _prompts: [{
-        //                 promptText: 'Yes',
-        //                 _callbackEvent: '_openTextInput:save',
-        //             }, {
-        //                 promptText: 'No',
-        //                 _callbackEvent: '_openTextInput:donotSave'
-        //             }],
-        //             _showIcon: true
-        //         };
-        //         Adapt.once('_openTextInput:save', function() {
-        //             this.storeUserAnswer();
-        //         }, this);
+         unsavedChangesNotification: function() {
+                 var promptObject = {
+                     title: this.model.get('unsavedChangesNotificationTitle'),
+                     body: this.model.get('unsavedChangesNotificationBody'),
+                     _prompts: [{
+                         promptText: 'Yes',
+                         _callbackEvent: '_openTextInput:save',
+                     }, {
+                         promptText: 'No',
+                         _callbackEvent: '_openTextInput:doNotSave'
+                     }],
+                     _showIcon: true
+                 };
+                 Adapt.once('_openTextInput:save', function() {
+                     this.storeUserAnswer();
+                      Adapt.router.set('_canNavigate', true, {pluginName:'_openTextInput'});
+                      Adapt.trigger('navigation:backButton');
+                 }, this);
 
-        //         Adapt.trigger('notify:prompt', promptObject);
-        // },
+                 Adapt.once('_openTextInput:doNotSave', function() {
+                   Adapt.router.set('_canNavigate', true, {pluginName:'_openTextInput'});
+                   Adapt.trigger('navigation:backButton');
+                 }, this);
+
+
+                 Adapt.trigger('notify:prompt', promptObject);
+         },
         postRender: function() {
             //set component to ready
             this.$textbox = this.$('.openTextInput-item-textbox');
@@ -100,6 +107,7 @@ define(function(require) {
             }
         },
         onKeyUpTextarea: function() {
+          console.log('onKeyUp');
             this.model.set('_isSaved', false);
             this.onUserAnswerChanged(null, this.$textbox.val());
             this.limitCharacters();
