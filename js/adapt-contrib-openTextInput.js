@@ -32,6 +32,8 @@ define(function(require) {
             }
         },
          unsavedChangesNotification: function() {
+         	if(this.model.get('_isSaved') == false)
+         	{
                  var promptObject = {
                      title: this.model.get('unsavedChangesNotificationTitle'),
                      body: this.model.get('unsavedChangesNotificationBody'),
@@ -44,19 +46,24 @@ define(function(require) {
                      }],
                      _showIcon: true
                  };
+
                  Adapt.once('_openTextInput:save', function() {
-                     this.storeUserAnswer();
-                      Adapt.router.set('_canNavigate', true, {pluginName:'_openTextInput'});
-                      Adapt.trigger('navigation:backButton');
+	                 	Adapt.router.set('_canNavigate', true, {pluginName:'_openTextInput'});
+	         					Adapt.trigger('navigation:backButton');
+	                  this.storeUserAnswer();
                  }, this);
 
                  Adapt.once('_openTextInput:doNotSave', function() {
-                   Adapt.router.set('_canNavigate', true, {pluginName:'_openTextInput'});
-                   Adapt.trigger('navigation:backButton');
+                 	Adapt.router.set('_canNavigate', true, {pluginName:'_openTextInput'});
+          				Adapt.trigger('navigation:backButton');
+                  this.model.set('_isSaved', true);
                  }, this);
 
-
                  Adapt.trigger('notify:prompt', promptObject);
+					} else {
+	          Adapt.router.set('_canNavigate', true, {pluginName:'_openTextInput'});
+  	        Adapt.trigger('navigation:backButton');
+					}
          },
         postRender: function() {
             //set component to ready
