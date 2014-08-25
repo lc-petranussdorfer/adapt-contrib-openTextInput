@@ -32,7 +32,7 @@ define(function(require) {
             }
         },
          unsavedChangesNotification: function() {
-         	if(this.model.get('_isSaved') == false)
+         	if(this.model.get('_isSaved') == false && this.model.get('_isAllowedToNavigate') == false)
          	{
                  var promptObject = {
                      title: this.model.get('unsavedChangesNotificationTitle'),
